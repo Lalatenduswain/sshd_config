@@ -1,0 +1,192 @@
+# NAME: LALATENDU HARDENED OPENSSH CONFIGURATION
+# AUTHOR: LALATENDU
+# DATE CREATED: MARCH 02, 2024
+# LAST UPDATED: MARCH 02, 2024
+
+
+########## Binding ##########
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+
+# Only listen to IPv4
+#AddressFamily inet
+
+# Only listen to IPv6
+# AddressFamily inet6
+
+########## Features ##########
+
+# ACCEPT LOCALE-RELATED ENVIRONMENT VARIABLES
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+
+# Specify the port for SSH. Change this to a non-standard port to reduce exposure to automated scans.
+Port 6594
+
+# Protocol versions to support. Disable SSH Protocol 1 for security reasons.
+# Ensure SSH server only uses SSH protocol version 2
+# SSHv1 contains security issues and should be avoided at all costs
+# Although SSHv1 is disabled by default after OpenSSH 7.0, this option is specified to ensure compatibility with older versions of OpenSSH server
+
+Protocol 2
+
+# Disable root login via SSH to prevent direct root access.
+PermitRootLogin no
+
+# Disable tun device forwarding
+PermitTunnel no
+
+# Override default of no subsystems
+# Path to the sftp-server binary depends on your distribution
+# Subsystem sftp /usr/lib/openssh/sftp-server
+# Subsystem sftp /usr/libexec/openssh/sftp-server
+Subsystem sftp internal-sftp
+
+# Disable password-based authentication in favor of SSH key-based authentication.
+PasswordAuthentication no
+
+# PAM authentication enabled to make password authentication available
+# remove this if password authentication is not needed
+# UsePAM yes
+
+# Set the maximum idle time in seconds before a session is terminated
+ClientAliveInterval 300
+# NUMBER OF CLIENT ALIVE MESSAGES SENT WITHOUT CLIENT RESPONDING
+ClientAliveCountMax 2
+
+# Prevent remote hosts from connecting to forwarded ports
+# Forwarded ports are forced to bind to 127.0.0.1 instead of 0.0.0.0
+GatewayPorts no
+
+
+
+# This setting disables all forwarding features in SSH, overriding any other forwarding switches.
+# Setting DisableForwarding to 'yes' ensures that no forwarding is permitted, including TCP, StreamLocal, and tun device forwarding.
+DisableForwarding yes
+
+
+# Specify the path to the authorized keys file. This is where SSH public keys for authentication are stored.
+AuthorizedKeysFile      .ssh/authorized_keys .ssh/authorized_keys2
+
+# Limit SSH access to specific users or groups, if applicable.
+AllowUsers lalatendu
+
+# To prevent StreamLocal (Unix-domain socket) forwarding in your SSH configuration, use the following directive
+AllowStreamLocalForwarding no
+
+# Specify the list of ciphers and MAC algorithms to use. This can enhance security by disabling weaker Cryptography algorithms.
+Ciphers aes256-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr,chacha20-poly1305@openssh.com
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+
+# Limit the maximum number of authentication attempts per connection to mitigate brute-force attacks.
+MaxAuthTries 3
+
+# SET THE MAXIMUM NUMBER OF CONCURRENT SSH SESSIONS ALLOWED PER USER | ALLOW A MAXIMUM OF TWO MULTIPLEXED SESSIONS OVER A SINGLE TCP CONNECTION
+MaxSessions 2
+
+# Disable empty passwords.
+PermitEmptyPasswords no
+
+# Set the maximum authentication lifetime (time until reauthentication) in seconds.
+MaxAuthAge 600
+
+# Set the maximum login grace time (time allowed for login after authentication) in seconds.
+LoginGraceTime 30
+
+# Set the maximum number of authentication failures before the connection is dropped.
+MaxStartups 3:50:10
+
+# Enable strict mode to enhance security by checking file permissions and ownership of the user's home directory and .ssh directory.
+StrictModes yes
+
+# Disable X11 forwarding to prevent X11 GUI applications from being forwarded over SSH.
+X11Forwarding no
+
+# Disallow TCP port forwarding over SSH tunnels
+# Note: Disabling TCP forwarding does not prevent users from creating port forwarding via other means
+# Users with interactive login shell privileges can still establish their own SSH tunnels
+AllowTcpForwarding no
+
+# Enable strict mode for enhanced security
+StrictModes yes
+
+# PREVENT SSH TRUST RELATIONSHIPS FROM ALLOWING LATERAL MOVEMENTS
+IgnoreRhosts yes
+
+# Log SSH environment variables for auditing
+PrintMotd yes
+PrintLastLog yes
+
+
+# Set the banner message displayed before login. You can use this to warn unauthorized users.
+Banner /etc/issue.net
+
+# Enable compression for faster data transfer over SSH.
+# Compression yes
+
+# COMPRESSION BEFORE ENCRYPTION MIGHT CAUSE SECURITY ISSUES
+Compression no
+
+# Set the logging level for SSH connections. Adjust as needed for your logging requirements.
+LogLevel VERBOSE
+
+# Specify the MAC algorithms for key exchange. This can enhance security by disabling weaker algorithms.
+KexAlgorithms curve25519-sha256@libssh.org
+# KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com
+PubkeyAcceptedKeyTypes ssh-ed25519,ssh-rsa
+#AuthenticationMethods publickey,keyboard-interactive
+
+# Disable SSH agent forwarding
+AllowAgentForwarding no
+
+#USE HOST-BASED AUTHENTICATION: IMPLEMENT HOST-BASED AUTHENTICATION IF IT'S SUITABLE FOR YOUR ENVIRONMENT. #THIS CAN PROVIDE AN ADDITIONAL LAYER OF SECURITY. ADD THE FOLLOWING LINE IF DESIRED
+
+HostbasedAuthentication no
+
+
+# Enable Pubkey Authentication
+PubkeyAuthentication yes
+
+# Disable TCP KeepAlive
+TCPKeepAlive no
+# Challenge-Response authentication backend is not configured by default
+ChallengeResponseAuthentication no
+MaxSessionsPerUser 2
+UsePrivilegeSeparation sandbox
+Banner /etc/issue.net
+
+
+# Disable DNS lookup during SSH connection | DISABLE REVERSE DNS LOOKUPS
+UseDNS no
+
+# Allow SSH access for a specific user from a specific IP address
+Match Address 192.168.1.100
+    AllowUsers lalatendu
+    #AllowTcpForwarding yes
+    PermitOpen any
+    PermitRootLogin no
+    X11Forwarding yes
+    PasswordAuthentication no
+    
+########## Authentication ##########
+
+# permit only the specified users to login
+#AllowUsers lalatendu
+
+# permit only users within the specified groups to login
+#AllowGroups lalatendu
+
+    
+DenyUsers ubuntu centos admin
+DenyGroups docker
+
+
+#Limit Access with TCP Wrapper: Use TCP wrappers (/etc/hosts.allow and /etc/hosts.deny) to control access to #SSH based on IP addresses or hostnames.
+# In /etc/hosts.allow
+#sshd: 192.168.1.0/24
+# In /etc/hosts.deny
+#sshd: ALL
+#LogLevel VERBOSE
