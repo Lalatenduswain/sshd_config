@@ -15,17 +15,25 @@ This repository hosts my hardened version of OpenSSH server (7.4+) configuration
 ```shell
 # download the configuration file from GitHub using curl or other methods
 curl https://raw.githubusercontent.com/lalatenduswain/sshd_config/master/sshd_config -o ~/sshd_config
+```
 
+```shell
 # backup the original sshd_config
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
+```
 
+```shell
 # replace the old sshd_config with the new one
 sudo mv ~/sshd_config /etc/ssh/sshd_config
+```
 
+```shell
 # make sure the file has the correct ownership and permissions
 sudo chown root:root /etc/ssh/sshd_config
 sudo chmod 644 /etc/ssh/sshd_config
+```
 
+```shell
 # use systemctl to reload the SSH server and apply the new configurations
 # on some distributions the SSH server service is called sshd
 sudo systemctl restart ssh
@@ -57,4 +65,3 @@ This script is provided as-is and may require modifications or updates based on 
 ## Donations
 
 If you find this script useful and want to show your appreciation, you can donate via [Buy Me a Coffee](https://www.buymeacoffee.com/lalatendu.swain).
-```
