@@ -1,6 +1,3 @@
-Here's the updated README.md file:
-
-```markdown
 # Harden OpenSSH Configuration
 
 This repository hosts my hardened version of OpenSSH server (7.4+) configuration file.
