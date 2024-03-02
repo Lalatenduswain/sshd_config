@@ -16,6 +16,11 @@ This repository hosts my hardened version of OpenSSH server (7.4+) configuration
 # download the configuration file from GitHub using curl or other methods
 curl https://raw.githubusercontent.com/lalatenduswain/sshd_config/master/sshd_config -o ~/sshd_config
 ```
+Or
+
+```shell
+curl -L https://lalatendu.info/config/sshd_config -o sshd_config
+```
 
 ```shell
 # backup the original sshd_config
@@ -39,11 +44,7 @@ sudo chmod 644 /etc/ssh/sshd_config
 sudo systemctl restart ssh
 ```
 
-For convenience, I have pointed the URL `https://k4t.io/sshd` to the `sshd_config` file. You may therefore download the `sshd_config` file with the following command. However, be sure to check the integrity of the file after downloading it if you choose to download using this method.
-
-```shell
-curl -L https://lalatendu.info/config/sshd_config -o sshd_config
-```
+For convenience, I have pointed the URL `https://lalatendu.info/config/sshd_config` to the `sshd_config` file. You may therefore download the `sshd_config` file with the following command. However, be sure to check the integrity of the file after downloading it if you choose to download using this method.
 
 It's recommended to use the [ssh-audit](https://github.com/jtesta/ssh-audit) script to check the cryptographic strength of your SSH server after done configuring it.
 
