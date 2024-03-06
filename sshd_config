@@ -54,7 +54,7 @@ PasswordAuthentication no
 # UsePAM yes
 
 # Set the maximum idle time in seconds before a session is terminated
-ClientAliveInterval 300
+ClientAliveInterval 180
 # NUMBER OF CLIENT ALIVE MESSAGES SENT WITHOUT CLIENT RESPONDING
 ClientAliveCountMax 2
 
@@ -192,3 +192,6 @@ DenyGroups docker
 # In /etc/hosts.deny
 #sshd: ALL
 #LogLevel VERBOSE
+
+# TCP Wrappers: Using TCP Wrappers is a sound practice.
+# Included /etc/hosts.allow and /etc/hosts.deny examples, ensure your setup effectively limits SSH access based on your security needs
