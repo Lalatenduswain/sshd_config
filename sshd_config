@@ -26,6 +26,12 @@ AcceptEnv XMODIFIERS
 
 # Specify the port for SSH. Change this to a non-standard port to reduce exposure to automated scans.
 Port 6594
+# sudo ufw allow 6594/tcp
+# sudo firewall-cmd --permanent --add-port=6594/tcp # RHEL
+# sudo firewall-cmd --reload # RHEL
+# sudo iptables -A INPUT -p tcp --dport 6594 -j ACCEPT
+# sudo service iptables save
+# sudo systemctl restart sshd
 
 # Protocol versions to support. Disable SSH Protocol 1 for security reasons.
 # Ensure SSH server only uses SSH protocol version 2
