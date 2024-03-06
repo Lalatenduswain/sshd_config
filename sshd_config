@@ -4,7 +4,7 @@
 # LAST UPDATED: MARCH 02, 2024
 
 # Update
-
+# sudo cp /etc/ssh/sshd_config "/etc/ssh/sshd_config_backup_$(date +"%Y%m%d%H%M%S")"
 
 ########## Binding ##########
 #ListenAddress 0.0.0.0
