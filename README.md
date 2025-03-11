@@ -1,4 +1,4 @@
-# Lalatendu Hardened OpenSSH Configuration | Debian
+# Lalatendu Hardened OpenSSH Configuration
 
 ## Author: Lalatendu Swain
 **GitHub**: [Lalatenduswain](https://github.com/Lalatenduswain/)  
